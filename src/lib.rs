@@ -1,8 +1,8 @@
+use anyhow::{Context, Result};
 use clap::Parser;
 use std::fs;
 use std::io::{self, Read};
 use std::path::PathBuf;
-use anyhow::{Result, Context};
 
 #[derive(Debug, Parser)]
 #[command(version, about)]
@@ -44,7 +44,8 @@ pub fn run(cli: Cli) -> Result<()> {
             .with_context(|| format!("Can't read file {}", path.display()))?,
         None => {
             let mut buf = String::new();
-            io::stdin().read_to_string(&mut buf)
+            io::stdin()
+                .read_to_string(&mut buf)
                 .context("Can't read from stdin")?;
             buf
         }
